@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import UrlForm from './UrlForm'
-// import CalcDisplay from './CalcDisplay'
+import CalcDisplay from './CalcDisplay'
+import { fetchProducts } from '../utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -22,18 +23,22 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const INITIAL_URL = "http://wp8m3he1wt.s3-website-ap-southeast-2.amazonaws.com/api/products/1"
-const INITIAL_CATEGORY = "Air Conditioner"
+const INITIAL_BASE = "http://wp8m3he1wt.s3-website-ap-southeast-2.amazonaws.com"
+const INITIAL_RELATIVE_URL = "/api/products/1"
+const INITIAL_CATEGORY = "Air Conditioners"
 
 const CubicWeightCalculator = () => {
   const classes = useStyles()
-  const [inputUrl, setInputUrl] = React.useState(INITIAL_URL)
+  const [baseUrl, setBaseUrl] = React.useState(INITIAL_BASE)
+  const [relativeUrl, setRelativeUrl] = React.useState(INITIAL_RELATIVE_URL)
   const [category, setCategory] = React.useState(INITIAL_CATEGORY)
-  const [calcDisplayData, setCalcDisplayData] = React.useState([])
+  const [calcProducts, setCalcProducts] = React.useState([])
   const [error, setError] = React.useState(null)
 
-  const calculateCubicWeights = () => {
-
+  const calculateCubicWeights = async () => {
+    const products = await fetchProducts(baseUrl, relativeUrl, category)
+    console.log(`products => `, products)
+    // setCalcProducts(products)
   }
 
   return (
@@ -54,8 +59,10 @@ const CubicWeightCalculator = () => {
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
               <UrlForm
-                inputUrl={inputUrl}
-                setInputUrl={setInputUrl}
+                baseUrl={baseUrl}
+                setBaseUrl={setBaseUrl}
+                relativeUrl={relativeUrl}
+                setRelativeUrl={setRelativeUrl}
                 category={category}
                 setCategory={setCategory}
                 calculateCubicWeights={calculateCubicWeights}
@@ -64,9 +71,10 @@ const CubicWeightCalculator = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper className={classes.paper}>
-              {/* <CalcDisplay
-                calcDisplayData={calcDisplayData}
-              /> */}
+              <CalcDisplay
+                category={category}
+                calcProducts={calcProducts}
+              />
             </Paper>
           </Grid>
         </Grid>

@@ -7,17 +7,22 @@ import { Grid } from '@material-ui/core'
 
 const UrlForm = props => {
   const {
-    inputUrl = "", setInputUrl,
+    baseUrl = "", setBaseUrl,
+    relativeUrl = "", setRelativeUrl,
     category = "", setCategory,
     calculateCubicWeights
   } = props
 
-  const handleInputUrl = event => {
-    setInputUrl("inputUrl", event.target.value)
+  const handleBaseUrl = event => {
+    setBaseUrl(event.target.value)
+  }
+
+  const handleRelativeUrl = event => {
+    setRelativeUrl(event.target.value)
   }
 
   const handleCategory = event => {
-    setCategory("category", event.target.value)
+    setCategory(event.target.value)
   }
 
 return (
@@ -30,11 +35,21 @@ return (
       <Grid item xs={12}>
         <TextField
           id="url"
-          label="Input URL"
+          label="Base URL"
           multiline
           fullWidth
-          value={inputUrl}
-          onChange={handleInputUrl}
+          value={baseUrl}
+          onChange={handleBaseUrl}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id="url"
+          label="Relative URL"
+          multiline
+          fullWidth
+          value={relativeUrl}
+          onChange={handleRelativeUrl}
         />
       </Grid>
       <Grid item xs={12}>
