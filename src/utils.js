@@ -14,7 +14,7 @@ const fetchProducts = async (base, url, category) => {
     const objects = _get(data, "data.objects")
 
     if(!objects) {
-      throw "The API endpoint appears to incorrectly configured"
+      throw Error("The API endpoint appears to incorrectly configured")
     }
     const filtered = objects.filter(obj => {
       return obj.category === category
@@ -31,7 +31,7 @@ const fetchProducts = async (base, url, category) => {
     calculated.forEach(product => categorisedProducts.push(product))
     next = _get(data, "data.next")
   }
-  
+
   return categorisedProducts
 }
 
