@@ -41,9 +41,10 @@ const calcCubicWeight = ({ height, width, length }) => {
         l = math.unit(length, DIST_UNIT)
   const volume = math.multiply(h, w, l)
   const cubicWeight = math.multiply(volume.toNumber('m^3'), CUBIC_WEIGHT_CONVERSION_FACTOR)
-  return math.format(cubicWeight, { precision: 14 })
+  return +math.format(cubicWeight, { precision: 14 })
 }
 
 export {
-  fetchProducts
+  fetchProducts,
+  calcCubicWeight
 }
