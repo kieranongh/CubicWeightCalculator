@@ -1,5 +1,6 @@
 import axios from "axios"
 import _get from "lodash.get"
+import * as math from "mathjs"
 
 const fetchProducts = async (base, url, category) => {
   const categorisedProducts = []
@@ -28,10 +29,15 @@ const fetchProducts = async (base, url, category) => {
   return categorisedProducts
 }
 
-const CENTIMETRE_CUBED_TO_METERS_CUBED = 1000000
 const CUBIC_WEIGHT_CONVERSION_FACTOR = 250
+const DIST_UNIT = "cm"
 const calcCubicWeight = ({ height, width, length }) => {
-  return height * width * length / CENTIMETRE_CUBED_TO_METERS_CUBED * CUBIC_WEIGHT_CONVERSION_FACTOR
+  const h = math.unit(height, DIST_UNIT),
+        w = math.unit(width, DIST_UNIT),
+        l = math.unit(length, DIST_UNIT)
+  const volume = math.multiply(h, w, l)
+  const cubicWeight = math.multiply(volume.toNumber('m^3'), CUBIC_WEIGHT_CONVERSION_FACTOR)
+  return math.format(cubicWeight, { precision: 14 })
 }
 
 export {

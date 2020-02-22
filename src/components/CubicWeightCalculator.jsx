@@ -38,7 +38,7 @@ const CubicWeightCalculator = () => {
   const calculateCubicWeights = async () => {
     const products = await fetchProducts(baseUrl, relativeUrl, category)
     console.log(`products => `, products)
-    // setCalcProducts(products)
+    setCalcProducts(products)
   }
 
   return (
