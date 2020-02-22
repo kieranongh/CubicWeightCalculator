@@ -1,6 +1,7 @@
 import axios from "axios"
 import _get from "lodash.get"
 import * as math from "mathjs"
+import uuid from "uuid"
 
 const fetchProducts = async (base, url, category) => {
   const categorisedProducts = []
@@ -10,20 +11,23 @@ const fetchProducts = async (base, url, category) => {
   while(!!next) {
     let data = await axios.get(base + next)
 
-    console.log(`data, CP => `, data, categorisedProducts)
     const objects = _get(data, "data.objects")
-    console.log(`category => `, category)
+    if(!objects) {
+      throw "The API endpoint appears to incorrectly configured"
+    }
     const filtered = objects.filter(obj => {
-      console.log(`obj.category => `, obj.category)
       return obj.category === category
     })
-    console.log(`filtered => `, filtered)
     const calculated = filtered.map(obj => ({
+      uuid: uuid(),
       ...obj,
       cubicWeight: calcCubicWeight(obj.size)
     }))
+    // Choosing to use push each item instead of concat becuase concat
+    // will create a new array and copy over previous items
+    // This solution retains the original array and only iterates over a relatively
+    // small amount of items
     calculated.forEach(product => categorisedProducts.push(product))
-    // categorisedProducts = categorisedProducts.concat(calculated)
     next = data.data.next
   }
   return categorisedProducts

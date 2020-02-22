@@ -36,9 +36,14 @@ const CubicWeightCalculator = () => {
   const [error, setError] = React.useState(null)
 
   const calculateCubicWeights = async () => {
-    const products = await fetchProducts(baseUrl, relativeUrl, category)
-    console.log(`products => `, products)
-    setCalcProducts(products)
+    try {
+      const products = await fetchProducts(baseUrl, relativeUrl, category)
+      setCalcProducts(products)
+    }
+    catch(error) {
+      console.log(error)
+      setError(error.message)
+    }
   }
 
   return (
