@@ -12,6 +12,7 @@ const fetchProducts = async (base, url, category) => {
     let data = await axios.get(base + next)
 
     const objects = _get(data, "data.objects")
+
     if(!objects) {
       throw "The API endpoint appears to incorrectly configured"
     }
@@ -28,8 +29,9 @@ const fetchProducts = async (base, url, category) => {
     // This solution retains the original array and only iterates over a relatively
     // small amount of items
     calculated.forEach(product => categorisedProducts.push(product))
-    next = data.data.next
+    next = _get(data, "data.next")
   }
+  
   return categorisedProducts
 }
 
